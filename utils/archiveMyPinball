@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ $# -lt 1 -o $# -gt 2 ] 
+then
+  echo "Usage: archiveMyPinball <version>"
+  exit 1
+fi
+
+tarFileName="myPinball-v$1.tar"
+gzipFileName="myPinball-v$1.tar.gz"
+
+if [ -z "$MY_PINBALL_INSTALL" ]
+then
+  echo "ERROR: Environment variable MY_PINBALL_INSTALL not defined"
+  exit 1
+fi
+
+echo "Archiving myPinball..."
+echo "Install directory: $MY_PINBALL_INSTALL"
+cd $MY_PINBALL_INSTALL
+cd ..
+if [ -e $gzipFileName ]
+then
+  echo "Removing old $gzipFileName..."
+  rm $gzipFileName
+fi
+echo "Creating $tarFileName..."
+cd $MY_PINBALL_INSTALL
+cd ..
+tar -cf $tarFileName mypinball
+echo "Creating $gzipFileName..."
+gzip -9 $tarFileName
+echo "myPinball archive complete!!"

@@ -1,1 +1,28 @@
-hello
+NAME:
+
+myPinball - Software Defined Pinball
+
+INTRODUCTION:
+
+The mission of this project is to create the software/firmware to enable the realization
+of a Software Defined Pinball physical game.  The idea is to create a standardized pinball
+playfield with standardized, interchangable, pluggable modules that can be easily configured
+by the novice.  This physical game can then have a gameplay defined that consists of game
+rules and modes that define how the game operates.  The gameplay is not hardcoded, but rather
+is created by the user via a graphical gameplay builder.  This gameplay builder will create
+a series of configuration files that defines how the game operates.  These files are read
+in by a common game engine that manages the play of the game.
+
+GETTING STARTED:
+
+This package contains binaries to run the myPinball game engine as well as source code to
+build it from scratch.  There is a build script in the utils directory for building.  This
+package uses the "pshell" process specific embedded shell library, which can be downloaded
+at:
+
+https://github.com/RonIovine/pshell
+
+The executable "myPinball" can be run from the command line.  It will startup the myPinball
+game simulation engine along with its graphical front end.  The game engine also supports
+a backdoor telnet interface which can be accessed at port 9090 (from any remote or local host).
+This telnet interface provides diagnostic and debug control of the game engine.

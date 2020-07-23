@@ -1,0 +1,7 @@
+This directory contains the master module database configuration file that defines
+all the types of unique pluggable modules supported along with information on those
+modules like the command and status set for that module, unique module id etc.
+
+This directory also contains a subdirectory of all the created gameplays as well as
+a softlink that points to the current gameplay subdirectory.
+

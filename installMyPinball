@@ -1,0 +1,91 @@
+#!/bin/bash
+
+localDir=$(pwd)
+if [ ! -e "$localDir/installMyPinball" ]
+then
+  echo "ERROR: This script must be run from same directory where it resides"
+  exit 1
+fi
+
+if [ $# -ge 1 ]
+then
+  if [ "$1" != "-local" -o $# -gt 2 ]
+  then
+    echo
+    echo "Usage: installMyPinball [-local [<shellEnvFile>]]"
+    echo
+    echo "  This install script will either install this package on a system"
+    echo "  wide basis or will setup a local install environment.  A system"
+    echo "  install must be done as 'root' and will copy all libraries, binaries,"
+    echo "  include files, conf files, and manpages to their customary system"
+    echo "  locations.  A local install will not copy/move any files.  It will"
+    echo "  only create a myPinball env file (.mypinballrc) that can be sourced"
+    echo "  in the current shell or can be added to your shell env file (i.e. .bashrc)"
+    echo "  that will allow use of the package features from a local directory."
+    echo
+    echo "  The location of the local install environment will be the directory"
+    echo "  where this script resides."
+    echo
+    echo "  where:"
+    echo "    local        - install locally, omit for system install"
+    echo "    shellEnvFile - name of shell environment file to modify"
+    echo "                   (e.g. full path to your .bashrc)"
+    echo
+    exit 1
+  else
+    # local install, create .mypinballrc env file
+    rm -f .mypinballrc
+    echo "#" >> .mypinballrc
+    echo "# Local PSHELL install env file" >> .mypinballrc
+    echo "#" >> .mypinballrc
+    echo "# This env file can be sourced in the current command shell with 'source .mypinballrc'" >> .mypinballrc
+    echo "# or can be sourced for all shells by adding 'source $localDir/.mypinballrc' to your '.bashrc'" >> .mypinballrc
+    echo "#" >> .mypinballrc
+    echo export MY_PINBALL_INSTALL=$localDir >> .mypinballrc
+    echo export PATH=\$MY_PINBALL_INSTALL/bin:\$MY_PINBALL_INSTALL/utils:\$PATH >> .mypinballrc
+    echo "Local install environment setup in '.mypinballrc'"
+    echo "To source enviromnent in current shell run 'source .mypinballrc'"
+    if [ $# -eq 2 ]
+    then
+      shellEnvFile=$2
+      if [ ! -e "$shellEnvFile" ]
+      then
+        echo "ERROR: Shell env file: $shellEnvFile, not found"
+        echo "To source enviromnent in all shells add 'source $localDir/.mypinballrc' to your '.bashrc'"
+      else
+        echo "#" >> $shellEnvFile
+        echo "# Setup local PSHELL install environment" >> $shellEnvFile
+        echo "#" >> $shellEnvFile
+        echo source $localDir/.mypinballrc >> $shellEnvFile
+      fi
+    else
+      echo "To source enviromnent in all shells add 'source $localDir/.mypinballrc' to your '.bashrc'"
+    fi
+  fi
+else
+  # system wide install
+  if [ $(whoami) != "root" ]
+  then
+    echo "ERROR: Must be 'root' to do system install of this package,"
+    echo "       run 'installPshell -l' for local install or 'installPshell -h' for usage"
+    exit 1
+  fi
+
+  installDir="/usr/share/myPinball"
+  rm -rf $installDir
+  mkdir $installDir
+  cp -rf * $installDir/.
+  
+  rm -f .mypinballrc
+  echo "#" >> .mypinballrc
+  echo "# Local PSHELL install env file" >> .mypinballrc
+  echo "#" >> .mypinballrc
+  echo "# This env file can be sourced in the current command shell with 'source .mypinballrc'" >> .mypinballrc
+  echo "# or can be sourced for all shells by adding 'source $localDir/.mypinballrc' to your '.bashrc'" >> .mypinballrc
+  echo "#" >> .mypinballrc
+  echo export MY_PINBALL_INSTALL=$installDir >> .mypinballrc
+  echo export PATH=\$MY_PINBALL_INSTALL/bin:\$MY_PINBALL_INSTALL/utils:\$PATH >> .mypinballrc
+  echo "Local install environment setup in '.mypinballrc'"
+  echo "To source enviromnent in current shell run 'source .mypinballrc'"
+
+fi

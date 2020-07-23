@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ -z "$MY_PINBALL_INSTALL" ]
+then
+  echo "ERROR: Environment variable MY_PINBALL_INSTALL not defined"
+  exit 1
+fi
+
+cd $MY_PINBALL_INSTALL/src
+g++ `pkg-config --cflags --libs gtk+-2.0` -Wall -I../include \
+myPinball.cc \
+Playfield.cc \
+Module.cc \
+Rules.cc \
+Utils.cc \
+Timer.cc \
+QueueThread.cc \
+-lpthread -lpshell-server \
+-o ../bin/myPinball `pkg-config --libs gtk+-2.0`
+  
