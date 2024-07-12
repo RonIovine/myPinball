@@ -783,12 +783,8 @@ int main(int argc, char *argv[])
   tf_addLevel("COMMAND", TL_COMMAND, true, true);
   tf_addLevel("RULE", TL_RULE, true, true);
 
-  // set our trace log prefix string
-  trace_setLogPrefix("my_pinball");
-  //trace_setLogPrefix(NULL);
-
   // don't show file, function, line information in trace logs
-  trace_showLocation(false);
+  trace_enableLocation(false);
   
   /* open syslog with our program name */
   char logFilePath[300];
@@ -796,11 +792,11 @@ int main(int argc, char *argv[])
   logFile = fopen(logFilePath, "w+");
   
   /* register our log function */
-  trace_registerLogFunction(traceLogFunction);
+  trace_registerOutputFunction(traceLogFunction);
 
   // initialize our trace filter machanism, need to do this before we
   // can issue any traces
-  tf_init();
+  tf_init("myPinball", NULL, TL_DEFAULT);
 
   // turn on our trace filtering
   pshell_runCommand("trace global +event command rule info debug");
