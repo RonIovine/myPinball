@@ -7,7 +7,7 @@ then
 fi
 
 cd $MY_PINBALL_INSTALL/src
-g++ `pkg-config --cflags --libs gtk+-2.0` -Wall -I../include \
+g++ `pkg-config --cflags --libs gtk+-2.0` -Wall -DDYNAMIC_TRACE_FILTER -DTF_INTEGRATED_TRACE_LOG -I../include \
 myPinball.cc \
 Playfield.cc \
 Module.cc \
