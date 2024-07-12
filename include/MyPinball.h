@@ -26,9 +26,9 @@ struct State
 };
 
 // define some program specific trace levels
-#define TL_EVENT    TL_MAX_LEVELS+1
-#define TL_COMMAND  TL_MAX_LEVELS+2
-#define TL_RULE  TL_MAX_LEVELS+3
+#define TL_EVENT    TL_MAX+1
+#define TL_COMMAND  TL_MAX+2
+#define TL_RULE  TL_MAX+3
 
 // define some program specific trace macros
 #define TRACE_EVENT(format, args...) __TRACE(TL_EVENT, "EVENT", format, ## args)
